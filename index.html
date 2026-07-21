@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic page setup -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 4: Full-Stack Dashboard</title>
+
+    <!-- Internal CSS for dashboard design -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef4ff;
+            margin: 0;
+            color: #333333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1f4e79, #3f7cac);
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background-color: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: #1f4e79;
+            margin-top: 0;
+        }
+
+        .intro-text {
+            line-height: 1.6;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: #1f4e79;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #163a5a;
+            transform: translateY(-2px);
+        }
+
+        .clear-btn {
+            background-color: #777777;
+        }
+
+        .clear-btn:hover {
+            background-color: #555555;
+        }
+
+        form {
+            display: grid;
+            gap: 14px;
+            margin-top: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #1f4e79;
+        }
+
+        input,
+        textarea {
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .message {
+            padding: 14px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .loading {
+            background-color: #fff4cc;
+            color: #6b5200;
+        }
+
+        .success {
+            background-color: #dff5df;
+            color: #1f6b1f;
+        }
+
+        .error {
+            background-color: #ffdede;
+            color: #8a0000;
+        }
+
+        .empty {
+            background-color: #eeeeee;
+            color: #555555;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .item-card {
+            background-color: #f8fbff;
+            border-left: 5px solid #1f4e79;
+            padding: 18px;
+            border-radius: 12px;
+            transition: 0.2s ease;
+        }
+
+        .item-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .item-card h3 {
+            color: #1f4e79;
+            margin-top: 0;
+        }
+
+        .category-tag {
+            display: inline-block;
+            background-color: #dcecff;
+            color: #1f4e79;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .api-note {
+            background-color: #f4f8ff;
+            border-left: 4px solid #3f7cac;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 15px;
+        }
+
+        footer {
+            text-align: center;
+            color: #555555;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 25px 15px;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Umar's Full-Stack Dashboard</h1>
+        <p>Project 4: Express API Integration and Cloud Deployment</p>
+    </header>
+
+    <main>
+        <!-- Overview section -->
+        <section>
+            <h2>Project Overview</h2>
+            <p class="intro-text">
+                This dashboard connects a front-end page to a real Express.js back-end.
+                It uses live API routes, JSON responses, environment variables, loading messages,
+                error handling, and a responsive card layout.
+            </p>
+
+            <div class="api-note">
+                API Endpoint Used: <strong>/api/items</strong>
+            </div>
+        </section>
+
+        <!-- API data section -->
+        <section>
+            <h2>Dashboard Items from Express API</h2>
+
+            <div class="button-row">
+                <button id="loadItemsBtn" title="Fetch dashboard items from the Express API">
+                    Load Items
+                </button>
+
+                <button id="clearItemsBtn" class="clear-btn" title="Clear the displayed items">
+                    Clear Items
+                </button>
+            </div>
+
+            <!-- Messages appear here -->
+            <div id="message-area"></div>
+
+            <!-- Environment greeting appears here -->
+            <div id="greeting-area"></div>
+
+            <!-- Items appear here -->
+            <div id="items-container" class="items-grid"></div>
+        </section>
+
+        <!-- Add item section -->
+        <section>
+            <h2>Add a New Dashboard Item</h2>
+            <p>
+                This form sends data to the Express back-end using a POST request.
+            </p>
+
+            <form id="itemForm">
+                <div>
+                    <label for="titleInput">Title</label>
+                    <input type="text" id="titleInput" placeholder="Example: Practice Deployment">
+                </div>
+
+                <div>
+                    <label for="categoryInput">Category</label>
+                    <input type="text" id="categoryInput" placeholder="Example: Cloud">
+                </div>
+
+                <div>
+                    <label for="descriptionInput">Description</label>
+                    <textarea id="descriptionInput" placeholder="Write a short description"></textarea>
+                </div>
+
+                <button type="submit">Add Item</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>Created by Umar Mohammed for INFO 350</p>
+    </footer>
+
+    <!-- Link to JavaScript file -->
+    <script src="dashboard_project.js"></script>
+</body>
+
+</html>
